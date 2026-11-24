@@ -9,6 +9,7 @@ on:
       - ".github/workflows/analyze.yml"
 permissions:
   contents: write
+  actions: read
   pages: write
   id-token: write
 concurrency:
@@ -24,6 +25,15 @@ jobs:
         with:
           python-version: "3.12"
           cache: pip
+      - name: Reuse previous cloud source snapshots when bootstrapping
+        if: hashFiles('data/raw/nhd_network_0.geojson') == ''
+        continue-on-error: true
+        uses: actions/download-artifact@v4
+        with:
+          name: pv-drainage-analysis
+          run-id: 45482877983
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: .
       - run: pip install -r requirements.txt
       - run: python src/analyze.py
       - name: Commit source snapshots and checked results

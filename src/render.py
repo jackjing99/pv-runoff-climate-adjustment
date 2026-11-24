@@ -53,7 +53,7 @@ The following table filters reaches flagged as having an upstream PV interior co
 
 ## Small-watershed reporting units
 
-HUC12 polygons partition the contributing mask for reporting and climate-data extraction. They are not automatically separate inlet basins. The model identifies portions of {len(hucs)} HUC12 units. Coverage and overlap reconcile in qa_checks.json.
+HUC12 polygons partition the contributing mask for reporting and climate-data extraction. They are not automatically separate inlet basins. The overlay intersects {len(hucs)} HUC12 reporting units, including small boundary slivers. A presentation flag identifies intersections below 0.1 square mile; this threshold does not select or exclude drainage and all intersections are retained for area accounting. Small overlaps can reflect differences between the 2025 WBD and the NHDPlus basin boundaries. They do not prove that the whole named HUC12 contributes. Use the clipped mask, never the union of the complete HUC12 polygons. Coverage and overlap reconcile in qa_checks.json.
 
 {markdown_table(hucs[['huc12','name','contributing_lower_sqmi','contributing_upper_sqmi']])}
 
@@ -116,7 +116,7 @@ Inward offsets test alignment differences between the groundwater-basin outline 
 <p class="notice">Green excludes each entry reach's entire local catchment; blue includes it. These are positional drainage-area brackets. EROM runoff proxies represent 1971â€“2000 reach-outlet climatology. No total current-year PV inflow or recharge is estimated.</p>
 <p class="links"><a href="https://github.com/jackjing99/pv-runoff-climate-adjustment/blob/main/results/REPORT.md">Full report and assumptions</a><a href="https://github.com/jackjing99/pv-runoff-climate-adjustment/tree/main/results">Download GIS and tables</a><a href="https://github.com/jackjing99/pv-runoff-climate-adjustment">Code and sources</a></p></header><div id="map"></div><section>
 <h2>Stream-entry runoff proxies</h2><p>Rows flagged for upstream PV contact are omitted from this display. See the full CSV for all entries and exit/reentry events. Do not sum these reach-outlet values.</p><div class="scroll">TABLE</div>
-<h2>What changes from the previous map?</h2><p>The drainage mask follows the mapped upstream network. It does not select watersheds because they lie nearby. Turn on the gray legacy layer to compare the former polygons. HUC12 boundaries are reporting partitions, not independent inlet watersheds.</p>
+<h2>What changes from the previous map?</h2><p>The drainage mask follows the mapped upstream network. It does not select watersheds because they lie nearby. Turn on the gray legacy layer to compare the former polygons. HUC12 boundaries are reporting partitions, not independent inlet watersheds. Small boundary overlaps can reflect dataset alignment differences; do not substitute whole HUC12 polygons for the clipped drainage mask.</p>
 <p>Built in GitHub Actions from public DWR and USGS sources. No local project files were created.</p></section>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script><script>
 const data=DATA;

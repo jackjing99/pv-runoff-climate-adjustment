@@ -129,7 +129,8 @@ def main():
                "contributing_lower_sqmi": geom.intersection(lower).area/M2_PER_SQMI,
                "contributing_upper_sqmi": clip.area/M2_PER_SQMI,
                "full_huc12_sqmi": geom.area/M2_PER_SQMI,
-               "fraction_of_huc12_in_upper_mask": clip.area/geom.area}
+               "fraction_of_huc12_in_upper_mask": clip.area/geom.area,
+               "small_boundary_intersection_under_0_1_sqmi": clip.area/M2_PER_SQMI < 0.1}
         huc_rows.append(row)
         huc_features.append(geo_feature(clip, row))
         clips.append(clip)
@@ -144,12 +145,19 @@ def main():
     # Public legacy source: boundary-flow polygons are compared, never presumed upstream.
     meta = get_json("cvhm2_smallwatersheds_metadata.json",
                     "https://www.sciencebase.gov/catalog/item/62201161d34ee0c6b38a870d", {"format": "json"})
-    archives = [f for f in meta["files"] if f["name"].lower().endswith(".zip") and "watershed" in f["name"].lower()]
-    assert len(archives) == 1, "Identify the published small-watershed archive explicitly"
-    archive_info = archives[0]
-    archive_path = download(archive_info["name"], archive_info["url"])
-    assert hashlib.md5(archive_path.read_bytes()).hexdigest() == archive_info["checksum"]["value"]
-    legacy = gpd.read_file("zip://" + str(archive_path)).to_crs(3310)
+    facets = [facet for facet in meta.get("facets", []) if facet.get("name") == "CVHM2_smallwatersheds"]
+    assert len(facets) == 1, "Identify the exact published shapefile facet"
+    components = facets[0]["files"]
+    names = {component["name"] for component in components}
+    assert {"CVHM2_smallwatersheds.shp", "CVHM2_smallwatersheds.shx",
+            "CVHM2_smallwatersheds.dbf", "CVHM2_smallwatersheds.prj"} <= names
+    for component in components:
+        assert Path(component["name"]).name == component["name"], "Unsafe component path"
+        original = download(component["name"], component["url"])
+        assert original.stat().st_size == int(component["size"])
+        assert hashlib.md5(original.read_bytes()).hexdigest() == component["checksum"]["value"]
+    legacy = gpd.read_file(RAW / "CVHM2_smallwatersheds.shp").to_crs(3310)
+    assert len(legacy) == 65 and legacy.ID.nunique() == 56, "Wrong source layer or changed publisher dataset"
     legacy_rows, legacy_features = [], []
     for index, row in legacy.iterrows():
         if row.geometry.distance(pv) > 30000:
