@@ -1,0 +1,38 @@
+{
+  "file": "data/raw/catchment_14883351.geojson",
+  "requested_url": "https://api.water.usgs.gov/fabric/pygeoapi/collections/catchmentsp/items",
+  "parameters": {
+    "featureid": 14883351,
+    "f": "json",
+    "limit": 2
+  },
+  "actual_url": "https://api.water.usgs.gov/fabric/pygeoapi/collections/catchmentsp/items?featureid=14883351&f=json&limit=2",
+  "retrieved_utc": "2026-11-24T20:38:43+00:00",
+  "http_status": 200,
+  "bytes": 7795,
+  "sha256": "0b86d4de1afc49478bb5c119fb63c0689bc3795f0c2715eb40d138e53dd1555f",
+  "response_headers": {
+    "Date": "Tue, 24 Nov 2026 20:38:43 GMT",
+    "Content-Type": "application/json",
+    "Transfer-Encoding": "chunked",
+    "Connection": "keep-alive",
+    "Age": "352",
+    "Content-Crs": "<http://www.opengis.net/def/crs/OGC/1.3/CRS84>",
+    "Content-Encoding": "gzip",
+    "Content-Language": "en-US",
+    "Referrer-Policy": "origin-when-cross-origin",
+    "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+    "Vary": "Accept-Encoding, Accept-Encoding",
+    "Via": "1.1 5f7d374d92b73172fce43b7879076d1c.cloudfront.net (CloudFront), https/1.1 api-umbrella (ApacheTrafficServer [cMsSf ])",
+    "X-Amz-Cf-Id": "lBUiDv5bsSgUxSGyBcDDVfSTIDPC5azz0c16LJOUWWXSX5b38x0AEg==",
+    "X-Amz-Cf-Pop": "HIO52-P4",
+    "X-Api-Umbrella-Request-Id": "d21t442soc18mmq61cs0",
+    "X-Cache": "Hit from cloudfront",
+    "X-Content-Type-Options": "nosniff",
+    "X-Ratelimit-Limit": "300",
+    "X-Ratelimit-Remaining": "290",
+    "X-Vcap-Request-Id": "6148b861-8ce1-4c6c-4dc9-7f47c82006b4",
+    "X-Xss-Protection": "1; mode=block",
+    "X-Frame-Options": "SAMEORIGIN"
+  }
+}

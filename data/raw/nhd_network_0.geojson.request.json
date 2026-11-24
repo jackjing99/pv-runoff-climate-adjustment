@@ -1,0 +1,39 @@
+{
+  "file": "data/raw/nhd_network_0.geojson",
+  "requested_url": "https://api.water.usgs.gov/fabric/pygeoapi/collections/nhdflowline_network/items",
+  "parameters": {
+    "f": "json",
+    "bbox": "-120.520710011,35.932527433,-120.084457079,36.301649967",
+    "limit": 1000,
+    "properties": "comid,gnis_name,flowdir,fromnode,tonode,hydroseq,dnhydroseq,dnminorhyd,divergence,rtndiv,dndraincou,areasqkm,totdasqkm,divdasqkm,ftype,qa_ma,qc_ma,qe_ma,qa_01,qa_02,qa_03,qa_04,qa_05,qa_06,qa_07,qa_08,qa_09,qa_10,qa_11,qa_12,qc_01,qc_02,qc_03,qc_04,qc_05,qc_06,qc_07,qc_08,qc_09,qc_10,qc_11,qc_12,qe_01,qe_02,qe_03,qe_04,qe_05,qe_06,qe_07,qe_08,qe_09,qe_10,qe_11,qe_12"
+  },
+  "actual_url": "https://api.water.usgs.gov/fabric/pygeoapi/collections/nhdflowline_network/items?f=json&bbox=-120.520710011%2C35.932527433%2C-120.084457079%2C36.301649967&limit=1000&properties=comid%2Cgnis_name%2Cflowdir%2Cfromnode%2Ctonode%2Chydroseq%2Cdnhydroseq%2Cdnminorhyd%2Cdivergence%2Crtndiv%2Cdndraincou%2Careasqkm%2Ctotdasqkm%2Cdivdasqkm%2Cftype%2Cqa_ma%2Cqc_ma%2Cqe_ma%2Cqa_01%2Cqa_02%2Cqa_03%2Cqa_04%2Cqa_05%2Cqa_06%2Cqa_07%2Cqa_08%2Cqa_09%2Cqa_10%2Cqa_11%2Cqa_12%2Cqc_01%2Cqc_02%2Cqc_03%2Cqc_04%2Cqc_05%2Cqc_06%2Cqc_07%2Cqc_08%2Cqc_09%2Cqc_10%2Cqc_11%2Cqc_12%2Cqe_01%2Cqe_02%2Cqe_03%2Cqe_04%2Cqe_05%2Cqe_06%2Cqe_07%2Cqe_08%2Cqe_09%2Cqe_10%2Cqe_11%2Cqe_12",
+  "retrieved_utc": "2026-11-24T20:38:39+00:00",
+  "http_status": 200,
+  "bytes": 3559638,
+  "sha256": "4d6600ed9622e4d7d4fc558665c6c8f7d0d56c33ae6c5c749c2fef79a51c3bef",
+  "response_headers": {
+    "Date": "Tue, 24 Nov 2026 20:38:39 GMT",
+    "Content-Type": "application/json",
+    "Transfer-Encoding": "chunked",
+    "Connection": "keep-alive",
+    "Age": "359",
+    "Content-Crs": "<http://www.opengis.net/def/crs/OGC/1.3/CRS84>",
+    "Content-Encoding": "gzip",
+    "Content-Language": "en-US",
+    "Referrer-Policy": "origin-when-cross-origin",
+    "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+    "Vary": "Accept-Encoding, Accept-Encoding",
+    "Via": "1.1 6a31d7747628574e9fa26dd40efa100a.cloudfront.net (CloudFront), https/1.1 api-umbrella (ApacheTrafficServer [cMsSf ])",
+    "X-Amz-Cf-Id": "ddIKgzl66XJo-HP9zgXxK-M-YiQjQZnW11rfZjzbYeMz2U2a5xGpfw==",
+    "X-Amz-Cf-Pop": "HIO52-P4",
+    "X-Api-Umbrella-Request-Id": "d21t4313kh973uuor5s0",
+    "X-Cache": "Hit from cloudfront",
+    "X-Content-Type-Options": "nosniff",
+    "X-Ratelimit-Limit": "300",
+    "X-Ratelimit-Remaining": "299",
+    "X-Vcap-Request-Id": "bad5e65c-39d2-4eb5-5d23-cee39ad41661",
+    "X-Xss-Protection": "1; mode=block",
+    "X-Frame-Options": "SAMEORIGIN"
+  }
+}

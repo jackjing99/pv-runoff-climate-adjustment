@@ -1,0 +1,32 @@
+{
+  "node_pairs_checked": 557,
+  "correct_endpoint_mismatches_over_100m": 0,
+  "reversed_endpoint_mismatches_over_100m": 557,
+  "all_hydroseq_decreases": true,
+  "boundary_coincident_events": 0,
+  "entry_reaches_without_adjacent_orientation_evidence": [],
+  "catchmentless_reaches": {
+    "14883293": "no_assigned_local_catchment_zero_area_in_network"
+  },
+  "status": "passed_automated_checks_preliminary_estimate",
+  "PV_area_sqmi": 75.30557762496389,
+  "local_network_reaches": 592,
+  "entry_reaches_original_boundary": 28,
+  "entry_events_original_boundary": 29,
+  "all_requested_upstream_sources_present": true,
+  "external_lower_sqmi": 375.3027313652692,
+  "external_upper_sqmi": 404.1889221988765,
+  "overlapping_basin_area_removed_sqmi": 434.67725700711645,
+  "huc12_reporting_units": 33,
+  "huc12_uncovered_sqmi": 0.0,
+  "huc12_overlap_sqmi": 1.7490246325269867e-12,
+  "minimum_local_catchment_in_basin_fraction": 0.9962461196808818,
+  "flux_total_intentionally_not_computed": true,
+  "software": {
+    "python": "3.12.16",
+    "geopandas": "1.1.1",
+    "pandas": "2.3.3",
+    "numpy": "2.3.5"
+  },
+  "completed_utc": "2026-11-24T20:44:36+00:00"
+}

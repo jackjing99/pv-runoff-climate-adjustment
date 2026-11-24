@@ -1,0 +1,37 @@
+{
+  "file": "data/raw/basin_17150536.geojson",
+  "requested_url": "https://api.water.usgs.gov/nldi/linked-data/comid/17150536/basin",
+  "parameters": {
+    "f": "json",
+    "simplified": "false",
+    "splitCatchment": "false"
+  },
+  "actual_url": "https://api.water.usgs.gov/nldi/linked-data/comid/17150536/basin?f=json&simplified=false&splitCatchment=false",
+  "retrieved_utc": "2026-11-24T20:38:59+00:00",
+  "http_status": 200,
+  "bytes": 12489,
+  "sha256": "8c906f680926742eb84a294c6a8ed3235d6a824e9e52281d7723644cc6ed8142",
+  "response_headers": {
+    "Date": "Tue, 24 Nov 2026 20:38:59 GMT",
+    "Content-Type": "application/geo+json",
+    "Content-Length": "12489",
+    "Connection": "keep-alive",
+    "Access-Control-Allow-Methods": "GET, HEAD, OPTIONS",
+    "Access-Control-Allow-Origin": "*",
+    "Age": "0",
+    "Cache-Control": "public, max-age=3600",
+    "Referrer-Policy": "origin-when-cross-origin",
+    "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+    "Via": "1.1 3caf9df4ca497afd40efb87f8957a7fa.cloudfront.net (CloudFront), https/1.1 api-umbrella (ApacheTrafficServer [cMsSfW])",
+    "X-Amz-Cf-Id": "RPwJQ9_LSun3GKYqCWv7pFiPQAGQ7GG3VkEioaQCEKGbAbHalDzWyg==",
+    "X-Amz-Cf-Pop": "HIO52-P4",
+    "X-Api-Umbrella-Request-Id": "d21t4810totdoud0ubp0",
+    "X-Cache": "Miss from cloudfront",
+    "X-Content-Type-Options": "nosniff",
+    "X-Ratelimit-Limit": "800",
+    "X-Ratelimit-Remaining": "755",
+    "X-Vcap-Request-Id": "12e38f50-3a1a-47b6-5700-87d517a2aa7d",
+    "X-Xss-Protection": "1; mode=block",
+    "X-Frame-Options": "SAMEORIGIN"
+  }
+}
