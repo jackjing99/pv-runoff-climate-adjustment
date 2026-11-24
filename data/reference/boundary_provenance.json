@@ -1,0 +1,17 @@
+{
+  "dataset": "DWR Bulletin 118 groundwater basins",
+  "basin": "5-022.10",
+  "source_type": "pinned previously saved public agency response",
+  "original_retrieved_utc": null,
+  "imported_utc": "2026-11-24T20:31:23.031758+00:00",
+  "sha256": "b53c8dddf1e72d6427a67635307448a9021d7dcada2bdcb778c07704c96149f8",
+  "source_url": "https://gis.water.ca.gov/arcgis/rest/services/Geoscientific/i08_B118_CA_GroundwaterBasins/FeatureServer/0/query",
+  "query": {
+    "f": "geojson",
+    "where": "Basin_Subbasin_Number = '5-022.10'",
+    "outFields": "OBJECTID,Basin_Subbasin_Number,Basin_Subbasin_Name,Area_SqMiles",
+    "returnGeometry": "true",
+    "outSR": 4326
+  },
+  "note": "Original retrieval timestamp is unknown. Imported response bytes are preserved; import time is not claimed as original retrieval time."
+}
