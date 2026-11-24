@@ -55,9 +55,17 @@ jobs:
             data/source_manifest.json
             data/raw/
           retention-days: 30
-      - uses: actions/configure-pages@v5
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: docs
-      - uses: actions/deploy-pages@v4
-        id: deployment
+      - name: Request publication of the committed report
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPOSITORY: ${{ github.repository }}
+        run: |
+          python - <<'PY'
+          import os, requests
+          base = "https://api.github.com/repos/" + os.environ["GH_REPOSITORY"]
+          headers = {"Authorization": "Bearer " + os.environ["GH_TOKEN"],
+                     "Accept": "application/vnd.github+json"}
+          response = requests.post(base + "/pages/builds", headers=headers, timeout=40)
+          response.raise_for_status()
+          print("Pages build requested:", response.json().get("status"))
+          PY
