@@ -30,8 +30,8 @@ import pandas as pd
 import requests
 from pyproj import Transformer
 from shapely import make_valid, union_all
-from shapely.geometry import LineString, Point, mapping, shape
-from shapely.ops import transform
+from shapely.geometry import GeometryCollection, LineString, Point, mapping, shape
+from shapely.ops import transform, substring
 
 ROOT = Path(__file__).resolve().parents[1]
 RAW = ROOT / "data/raw"
@@ -63,6 +63,7 @@ def download(name, url, params=None):
     meta_path = RAW / (name + ".request.json")
     if path.exists() and meta_path.exists():
         meta = json.loads(meta_path.read_text())
+        assert meta["requested_url"] == url and meta["parameters"] == (params or {}), "Cached query contract changed; version the source snapshot"
         assert hashlib.sha256(path.read_bytes()).hexdigest() == meta["sha256"]
         SOURCES.append(meta)
         return path
@@ -214,19 +215,32 @@ def inlet_sources(comid):
                      {"f": "json", "simplified": "false", "splitCatchment": "false"})
     local = get_json(f"catchment_{comid}.geojson", f"{FABRIC}/collections/catchmentsp/items",
                      {"featureid": comid, "f": "json", "limit": 2})
-    assert len(local["features"]) == 1 and int(
-        local["features"][0]["properties"]["featureid"]) == comid, "Catchment filter was ignored"
+    if len(local["features"]) == 1:
+        assert int(local["features"][0]["properties"]["featureid"]) == comid, "Catchment identifier mismatch"
+        local_method = "native_mapped_local_catchment"
+    elif len(local["features"]) == 0 and local.get("numberMatched") == 0:
+        network = get_json(f"catchmentless_reach_{comid}.geojson",
+                           f"{FABRIC}/collections/nhdflowline_network/items",
+                           {"comid": comid, "f": "json", "limit": 2})
+        assert len(network["features"]) == 1 and int(network["features"][0]["properties"]["comid"]) == comid
+        local_method = ("no_assigned_local_catchment_zero_area_in_network"
+                        if float(network["features"][0]["properties"]["areasqkm"]) == 0
+                        else "unresolved_local_catchment_conservative_whole_basin")
+    else:
+        raise AssertionError(f"Unexpected catchment response {comid}: count={len(local['features'])}")
     upstream = get_json(f"upstream_{comid}.geojson",
                         f"{NLDI}/comid/{comid}/navigation/UT/flowlines",
                         {"f": "json", "distance": 1000})
     upstream_ids = {int(feature["properties"]["nhdplus_comid"]) for feature in upstream["features"]}
     assert comid in upstream_ids, "Upstream navigation omitted the starting reach"
     basin_m = transform(TO_M, geometry(basin))
-    local_m = transform(TO_M, geometry(local))
-    fraction = local_m.intersection(basin_m).area/local_m.area
+    local_m = (transform(TO_M, geometry(local)) if local_method == "native_mapped_local_catchment"
+               else GeometryCollection() if local_method == "no_assigned_local_catchment_zero_area_in_network"
+               else basin_m)
+    fraction = local_m.intersection(basin_m).area/local_m.area if local_m.area > 0 else 1.0
     assert fraction >= 0.99, f"Local catchment not contained in basin {comid}: {fraction}"
     return comid, {"basin": basin_m, "local": local_m, "upstream_ids": upstream_ids,
-                   "local_in_basin_fraction": fraction}
+                   "local_in_basin_fraction": fraction, "local_catchment_method": local_method}
 
 
 def finite_flow(value):

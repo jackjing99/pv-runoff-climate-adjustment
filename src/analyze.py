@@ -66,9 +66,7 @@ def main():
         prop, source = lines[comid]["properties"], sources[comid]
         events = [e for e in all_events if e["inset_m"] == 0 and e["comid"] == comid and e["event"] == "enter"]
         first_distance = min(e["distance_along_m"] for e in events)
-        own_before_inside = lines[comid]["line"].intersection(core).intersection(
-            lines[comid]["line"].buffer(0.001)).length > 0 and any(
-                core.contains(lines[comid]["line"].interpolate(d)) for d in np.linspace(0, first_distance, 30))
+        own_before_inside = substring(lines[comid]["line"], 0, max(0, first_distance-0.001)).intersection(core).length > 0.1
         upstream_inside = bool((source["upstream_ids"]-{comid}) & inside_reaches)
         upstream_names = sorted({str(lines[c]["properties"].get("gnis_name", "")).strip()
                                  for c in source["upstream_ids"] & set(lines)
@@ -78,11 +76,13 @@ def main():
         inlet_rows.append({"comid": comid, "reach_name": name or f"Unnamed reach {comid}",
                            "upstream_named_streams_in_local_window": "; ".join(upstream_names),
                            "entry_event_count": len(events),
-                           "reentry_or_upstream_PV_contact_flag": upstream_inside or own_before_inside,
+                           "reentry_or_upstream_PV_contact_flag": upstream_inside or own_before_inside or len(events) > 1,
+                           "has_multiple_entry_events": len(events) > 1,
                            "upstream_network_reaches": len(source["upstream_ids"]),
                            "external_lower_sqmi": source["basin"].difference(source["local"]).difference(pv).area/M2_PER_SQMI,
                            "external_upper_sqmi": source["basin"].difference(pv).area/M2_PER_SQMI,
                            "local_catchment_in_basin_fraction": source["local_in_basin_fraction"],
+                           "local_catchment_method": source["local_catchment_method"],
                            "qa_runoff_cfs_1971_2000_outlet": qa_flow,
                            "qc_reference_cfs_1971_2000_outlet": qc_flow,
                            "qe_gage_adjusted_cfs_1971_2000_outlet": qe_flow,
@@ -170,7 +170,15 @@ def main():
     legacy_frame.to_csv(OUT / "legacy_small_watershed_connectivity_comparison.csv", index=False)
     save_geojson(OUT / "legacy_small_watersheds_near_PV.geojson", legacy_features)
     raw_sum = sum(sources[c]["basin"].difference(pv).area for c in selected)
-    qa.update({"status": "passed_automated_checks_preliminary_estimate",
+    orientation = pd.read_csv(OUT / "topology_orientation_checks.csv")
+    relevant_pairs = orientation.loc[orientation.upstream_comid.isin(selected) | orientation.downstream_comid.isin(selected)]
+    assert not ((relevant_pairs.correct_endpoint_gap_m > 100) & (relevant_pairs.reversed_endpoint_gap_m <= 100)).any(), "Entry orientation reversed against adjacent nodes"
+    checked_entry_ids = set(relevant_pairs.upstream_comid) | set(relevant_pairs.downstream_comid)
+    qa.update({"boundary_coincident_events": int((event_frame.event == "boundary_coincident").sum()),
+               "entry_reaches_without_adjacent_orientation_evidence": sorted(set(selected)-checked_entry_ids),
+               "catchmentless_reaches": {str(c):s["local_catchment_method"] for c,s in sources.items()
+                                         if s["local_catchment_method"] != "native_mapped_local_catchment"},
+               "status": "passed_automated_checks_preliminary_estimate",
                "PV_area_sqmi": pv.area/M2_PER_SQMI, "local_network_reaches": len(lines),
                "entry_reaches_original_boundary": len(selected),
                "entry_events_original_boundary": sum(e["inset_m"] == 0 and e["event"] == "enter" for e in all_events),

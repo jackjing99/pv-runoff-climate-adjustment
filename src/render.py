@@ -78,6 +78,8 @@ Inward offsets test alignment differences between the groundwater-basin outline 
 - Used a pinned, previously saved public DWR basin response. Its original retrieval timestamp is unknown; the provenance record identifies the import time, exact agency query and SHA-256. No private model-grid files are used.
 - Network connectivity indicates where generated runoff could reach PV. Actual delivery depends on channel infiltration, ephemeral flow, diversions, storm intensity, reservoir operations and routing. Groundwater contribution can follow different paths.
 - EROM is a historical climatological screening proxy. No current-year runoff, channel-loss calibration, recharge quantity or uncertainty probability is claimed.
+- Zero-local-area connectors without a mapped catchment are retained only after independently checking the network's local-area attribute is exactly zero; those cases are logged in QA. Any other missing local catchment conservatively makes that inlet's lower contribution zero while retaining its upstream basin in the upper mask.
+- Boundary-coincident events and reaches without adjacent-node orientation evidence are explicitly listed in QA; they remain potential sources of incompleteness or positional uncertainty.
 - Medium-resolution NHDPlus can omit small or modified channels. The footprint is an estimate for mapped drainage, not proof that all physical contributors are captured.
 - Divergent/returning reaches and canals remain flagged in the entry table; unknown allocation prevents a summed inflow estimate.
 - Climate adjustment must use this spatial mask as a candidate domain and separately validate hydrologic response. A CIMIS/BCM PET regression is not a runoff multiplier.

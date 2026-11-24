@@ -43,6 +43,7 @@ jobs:
           path: |
             results/
             data/source_manifest.json
+            data/raw/
           retention-days: 30
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
